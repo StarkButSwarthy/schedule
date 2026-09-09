@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#06121b">
-<title>НЛТУ • Розклад пар</title>
+<title>для моєї киці • Твій розклад</title>
 <style>
 :root{
-  --bg:#050d14;
-  --bg2:#071722;
-  --panel:#091925;
-  --panel2:#0c1e2b;
+  --bg:#08090d;
+  --bg2:#101219;
+  --panel:#151821;
+  --panel2:#1a1d27;
   --line:rgba(125,211,252,.12);
   --line2:rgba(125,211,252,.22);
   --text:#edf8ff;
   --muted:#7f9caf;
-  --cyan:#27d9e8;
-  --green:#32e89a;
-  --blue:#36a8ff;
-  --purple:#a56cff;
-  --danger:#ff667d;
+  --cyan:#cfd2e8;
+  --green:#e7d9ef;
+  --blue:#b8c7e8;
+  --purple:#b99bd8;
+  --danger:#e58da0;
   --shadow:0 20px 60px rgba(0,0,0,.35);
   --radius:24px;
 }
@@ -41,14 +41,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .sidebar{
   width:270px;min-height:100vh;position:fixed;left:0;top:0;bottom:0;
   padding:28px 20px;display:flex;flex-direction:column;
-  background:linear-gradient(180deg,#07131e 0%,#06111a 100%);
+  background:linear-gradient(180deg,#11131a 0%,#0d0f15 100%);
   border-right:1px solid var(--line);z-index:20;
 }
 .brand{display:flex;align-items:center;gap:13px;padding:0 10px 30px}
 .logo{
   width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
   font-weight:900;font-size:22px;color:#051117;
-  background:linear-gradient(135deg,var(--green),var(--cyan));
+  background:linear-gradient(135deg,#eee4f3,#cfd2e8);
   box-shadow:0 0 28px rgba(39,217,232,.22);
 }
 .brand-title{font-weight:900;font-size:22px;letter-spacing:-.02em}
@@ -94,7 +94,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   border:1px solid rgba(50,232,154,.75);
   background:
     radial-gradient(circle at 0 100%,rgba(50,232,154,.09),transparent 35%),
-    linear-gradient(145deg,#071c25,#07141e);
+    linear-gradient(145deg,#171922,#07141e);
   box-shadow:0 0 35px rgba(50,232,154,.08);
 }
 .active-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(50,232,154,.035),transparent 55%)}
@@ -112,7 +112,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .active-card h3{position:relative;margin:28px 0 8px;font-size:31px;letter-spacing:-.035em}
 .meta{position:relative;color:#8ea8ba;font-size:16px}
 .progress-track{height:9px;border-radius:99px;background:#101f2b;border:1px solid rgba(126,174,198,.18);overflow:hidden;margin:28px 0 20px}
-.progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#31b8ff,#34e79c);box-shadow:0 0 14px rgba(50,232,154,.4);width:0%}
+.progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#bfc9e4,#eadcf0);box-shadow:0 0 14px rgba(50,232,154,.4);width:0%}
 .active-bottom{position:relative;display:flex;align-items:end;justify-content:space-between;gap:20px}
 .remaining-label{color:#93a9b8;font-size:15px;font-weight:700}
 .remaining{font-size:42px;line-height:1;color:var(--green);font-weight:950;letter-spacing:.02em;text-shadow:0 0 18px rgba(50,232,154,.2)}
@@ -132,11 +132,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .week-panel{margin-top:18px;padding:25px}
 .day-tabs{display:flex;gap:7px;overflow:auto;padding-bottom:2px}
 .day{
-  border:1px solid var(--line);background:#081825;color:#7e9bac;border-radius:13px;
+  border:1px solid var(--line);background:#151821;color:#7e9bac;border-radius:13px;
   padding:10px 15px;font-weight:900;white-space:nowrap;
 }
 .day:hover{border-color:var(--line2);color:#dffaff}
-.day.active{color:#061118;background:linear-gradient(135deg,var(--green),var(--cyan));border-color:transparent;box-shadow:0 0 20px rgba(39,217,232,.14)}
+.day.active{color:#061118;background:linear-gradient(135deg,#eee4f3,#cfd2e8);border-color:transparent;box-shadow:0 0 20px rgba(39,217,232,.14)}
 .schedule-list{display:grid;gap:11px;margin-top:16px}
 .lesson-card{
   position:relative;display:grid;grid-template-columns:105px minmax(0,1fr) auto;gap:17px;align-items:center;
@@ -151,7 +151,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .card-badge{font-size:11px;padding:5px 8px;border-radius:8px;font-weight:900}
 .card-actions{display:flex;gap:7px}
-.icon-btn{border:1px solid var(--line);background:#0a1b28;color:#9cb4c3;width:38px;height:38px;border-radius:11px}
+.icon-btn{border:1px solid var(--line);background:#171a23;color:#9cb4c3;width:38px;height:38px;border-radius:11px}
 .icon-btn:hover{border-color:var(--line2);color:#fff;background:#102636}
 .icon-btn.delete:hover{color:#ff8b9d;border-color:rgba(255,102,125,.35);background:rgba(255,102,125,.08)}
 .countdown-inline{display:inline-flex;margin-top:9px;color:var(--green);font-weight:900;font-size:12px}
@@ -163,8 +163,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   border:0;border-radius:13px;padding:12px 16px;font-weight:900;transition:.18s;white-space:nowrap
 }
 .btn:hover{transform:translateY(-1px)}
-.btn-accent{color:#041219;background:linear-gradient(135deg,var(--green),var(--cyan));box-shadow:0 10px 25px rgba(39,217,232,.13)}
-.btn-ghost{color:#b7cbd6;background:#0a1a26;border:1px solid var(--line)}
+.btn-accent{color:#041219;background:linear-gradient(135deg,#eee4f3,#cfd2e8);box-shadow:0 10px 25px rgba(39,217,232,.13)}
+.btn-ghost{color:#b7cbd6;background:#151820;border:1px solid var(--line)}
 .btn-danger{color:#ff91a0;background:rgba(255,102,125,.1);border:1px solid rgba(255,102,125,.2)}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
 .stat-box{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(7,21,31,.72)}
@@ -176,7 +176,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .modal-backdrop.open{display:grid;place-items:center}
 .modal{
   width:min(560px,100%);border:1px solid var(--line2);border-radius:25px;padding:25px;
-  background:linear-gradient(145deg,#0b1e2c,#07131e);box-shadow:0 30px 100px rgba(0,0,0,.55)
+  background:linear-gradient(145deg,#181a24,#11131a);box-shadow:0 30px 100px rgba(0,0,0,.55)
 }
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .modal-head h2{margin:0;font-size:22px}
@@ -184,7 +184,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .form{display:grid;gap:14px}.field{display:grid;gap:7px}.field label{font-size:12px;color:#a9bdc9;font-weight:900}
 .field input,.field select{
   width:100%;border:1px solid var(--line2);border-radius:12px;padding:12px 13px;
-  color:var(--text);background:#081a27;outline:none
+  color:var(--text);background:#141720;outline:none
 }
 .field input::placeholder{color:#506b7a}
 .field input:focus,.field select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(39,217,232,.08)}
@@ -216,7 +216,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   .dashboard-grid{margin-top:13px;gap:13px}.today-panel,.next-list,.week-panel{padding:17px;border-radius:20px}
   .active-card{padding:19px}.active-card h3{font-size:25px;margin-top:22px}.meta{font-size:14px}
   .remaining{font-size:34px}.live{font-size:14px}.live-dot{width:13px;height:13px}.type-badge{padding:7px 10px;font-size:11px}
-  .lesson-card{grid-template-columns:1fr auto;gap:10px;padding:15px}.lesson-time{grid-column:1/-1}
+  .lesson-card{grid-template-columns:1fr auto;gap:10px;padding:15px}.lesson-time{grid-column:1/-1}.week-badge{margin-left:3px}
   .lesson-main{grid-column:1/-1}.card-actions{grid-column:2;grid-row:2}
   .stats-row{gap:8px}.stat-box{padding:13px}.stat-box strong{font-size:21px}
   .toolbar{align-items:flex-start}.toolbar h2{font-size:22px}.btn{padding:11px 13px}
@@ -226,14 +226,26 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   .nav-btn{padding:8px}.greeting p{display:none}.date-pill{font-size:10px}.active-bottom{align-items:center}
   .remaining{font-size:30px}.lesson-card h3{font-size:16px}.two{grid-template-columns:1fr}
 }
+
+.week-switch{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 18px}
+.week-btn{border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--muted);
+  padding:9px 13px;border-radius:11px;font-weight:800;font-size:12px;cursor:pointer;transition:.18s}
+.week-btn:hover{border-color:var(--line2);color:var(--text)}
+.week-btn.active{color:#11131a;background:linear-gradient(135deg,#eee4f3,#cfd2e8);border-color:transparent}
+.week-badge{display:inline-flex;align-items:center;padding:6px 9px;border-radius:9px;
+  font-size:10px;font-weight:900;letter-spacing:.3px;border:1px solid var(--line);margin-left:6px}
+.week-numerator{color:#e7d9ef;background:rgba(231,217,239,.09);border-color:rgba(231,217,239,.28)}
+.week-denominator{color:#cfd2e8;background:rgba(207,210,232,.09);border-color:rgba(207,210,232,.28)}
+.week-both{color:#b8c7e8;background:rgba(184,199,232,.08);border-color:rgba(184,199,232,.24)}
+
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
     <div class="brand">
-      <div class="logo">Н</div>
-      <div><div class="brand-title">НЛТУ</div><div class="brand-sub">Розклад пар</div></div>
+      <div class="logo">♡</div>
+      <div><div class="brand-title">для моєї киці</div><div class="brand-sub">Твій розклад</div></div>
     </div>
     <nav class="nav">
       <button class="nav-btn active" data-page="home"><span class="nav-icon">⌂</span><span>Головна</span></button>
@@ -241,8 +253,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <button class="nav-btn" id="addFromNav"><span class="nav-icon">＋</span><span>Додати пару</span></button>
     </nav>
     <div class="sidebar-bottom">
-      <strong>🌲 НЛТУ України</strong>
-      <span>Твій персональний розклад. Дані автоматично зберігаються у браузері.</span>
+      <strong>🌲 для моєї киці України</strong>
+      <span>Твій особистий розклад. Дані автоматично зберігаються у браузері.</span>
     </div>
   </aside>
 
@@ -250,7 +262,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="topbar">
       <div class="greeting">
         <h1 id="greeting">Доброго дня!</h1>
-        <p>Нехай сьогоднішній день буде продуктивним 🌿</p>
+        <p>Нехай сьогоднішній день буде легким і красивим ♡</p>
       </div>
       <div class="date-pill">▣ <span id="headerDate"></span></div>
     </div>
@@ -289,6 +301,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       </div>
       <div class="panel week-panel">
         <div class="day-tabs" id="days"></div>
+        <div class="week-switch" id="weekSwitch">
+          <button class="week-btn active" type="button" data-week-filter="all">Усі</button>
+          <button class="week-btn" type="button" data-week-filter="numerator">Чисельник</button>
+          <button class="week-btn" type="button" data-week-filter="denominator">Знаменник</button>
+        </div>
         <div id="scheduleList" class="schedule-list"></div>
         <div class="save-note">Розклад зберігається автоматично на цьому пристрої.</div>
       </div>
@@ -317,6 +334,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           <option value="practice">Практика</option>
         </select>
       </div>
+      <div class="field"><label>Тиждень</label>
+        <select id="week">
+          <option value="both">Кожного тижня</option>
+          <option value="numerator">Чисельник</option>
+          <option value="denominator">Знаменник</option>
+        </select>
+      </div>
       <div class="field"><label>Назва предмета</label><input id="subject" required placeholder="Наприклад: Дискретна математика"></div>
       <div class="field"><label>Викладач</label><input id="teacher" placeholder="Наприклад: Іваненко І.І."></div>
       <div class="field"><label>Аудиторія</label><input id="room" placeholder="Наприклад: А56"></div>
@@ -341,6 +365,7 @@ const typeNames = {lecture:"Лекція",lab:"Лаба",practice:"Практи�
 const typeIcons = {lecture:"◈",lab:"⌘",practice:"✦"};
 let lessons = [];
 let selectedDay = new Date().getDay();
+let weekFilter = "all";
 
 try{
   lessons = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -356,7 +381,8 @@ function normalize(){
     room:String(l.room||""),
     start:l.start||"08:30",
     duration:Number(l.duration)||90,
-    type:l.type||"lecture"
+    type:l.type||"lecture",
+    week:l.week||"both"
   }));
 }
 normalize();
@@ -399,10 +425,17 @@ function updateStats(){
   document.getElementById("todayLessons").textContent=lessons.filter(l=>isToday(l.day)).length;
 }
 function sortedFor(day){
-  return lessons.filter(l=>Number(l.day)===Number(day)).sort((a,b)=>a.start.localeCompare(b.start));
+  return lessons
+    .filter(l=>Number(l.day)===Number(day))
+    .filter(l=>weekFilter==="all" || l.week==="both" || l.week===weekFilter)
+    .sort((a,b)=>a.start.localeCompare(b.start));
 }
 function typeBadge(l){
   return `<span class="type-badge type-${l.type}">${typeNames[l.type]||"Лекція"}</span>`;
+}
+function weekBadge(l){
+  const names={numerator:"Чисельник",denominator:"Знаменник",both:"Кожного тижня"};
+  return `<span class="week-badge week-${l.week||"both"}">${names[l.week||"both"]}</span>`;
 }
 function cardHTML(l){
   const st=lessonStatus(l);
@@ -410,7 +443,7 @@ function cardHTML(l){
   return `<article class="lesson-card ${st?'current':''}">
     <div class="lesson-time"><div class="time-big">${esc(l.start)}</div><div class="time-small">${l.duration} хв · до ${endTime(l.start,l.duration)}</div></div>
     <div class="lesson-main">
-      <div class="card-top"><h3>${esc(l.subject)}</h3>${typeBadge(l)}</div>
+      <div class="card-top"><h3>${esc(l.subject)}</h3><div>${typeBadge(l)}${weekBadge(l)}</div></div>
       <p>${meta || "Деталі не вказані"}</p>
       ${st?`<div class="countdown-inline">● Зараз триває · залишилось ${countdownText(st.remaining)}</div>`:""}
     </div>
@@ -434,7 +467,7 @@ function renderActive(){
     const upcoming=today.find(l=>minutes(l.start)>new Date().getHours()*60+new Date().getMinutes());
     if(upcoming){
       area.innerHTML=`<div class="active-card">
-        <div class="active-top"><div class="live" style="color:#75a1b5"><span class="live-dot" style="background:#477082;box-shadow:none"></span> НАСТУПНА ПАРА</div>${typeBadge(upcoming)}</div>
+        <div class="active-top"><div class="live" style="color:#75a1b5"><span class="live-dot" style="background:#477082;box-shadow:none"></span> НАСТУПНА ПАРА</div><div>${typeBadge(upcoming)}${weekBadge(upcoming)}</div></div>
         <h3>${esc(upcoming.subject)}</h3>
         <div class="meta">${upcoming.room?`ауд. ${esc(upcoming.room)}`:"Аудиторія не вказана"} · ${upcoming.start} – ${endTime(upcoming.start,upcoming.duration)}</div>
         <div class="active-bottom" style="margin-top:27px"><div class="remaining-label">Початок пари</div><div class="remaining">${esc(upcoming.start)}</div></div>
@@ -446,7 +479,7 @@ function renderActive(){
   }
   const st=lessonStatus(current);
   area.innerHTML=`<div class="active-card">
-    <div class="active-top"><div class="live"><span class="live-dot"></span> ЗАРАЗ ТРИВАЄ</div>${typeBadge(current)}</div>
+    <div class="active-top"><div class="live"><span class="live-dot"></span> ЗАРАЗ ТРИВАЄ</div><div>${typeBadge(current)}${weekBadge(current)}</div></div>
     <h3>${esc(current.subject)}</h3>
     <div class="meta">${current.room?`ауд. ${esc(current.room)}`:"Аудиторія не вказана"} · ${current.start} – ${endTime(current.start,current.duration)}</div>
     <div class="progress-track"><div class="progress-fill" style="width:${st.percent}%"></div></div>
@@ -464,7 +497,7 @@ function renderNext(){
   }
   el.innerHTML=list.map(l=>`<div class="lesson-mini">
     <div class="subject-icon">${typeIcons[l.type]||"◈"}</div>
-    <div><strong>${esc(l.subject)}</strong><span>${l.room?`ауд. ${esc(l.room)} · `:""}${typeNames[l.type]||"Лекція"}</span></div>
+    <div><strong>${esc(l.subject)}</strong><span>${l.room?`ауд. ${esc(l.room)} · `:""}${typeNames[l.type]||"Лекція"} · ${({numerator:"Чисельник",denominator:"Знаменник",both:"Кожного тижня"})[l.week||"both"]}</span></div>
     <div class="mini-time">${esc(l.start)}</div>
   </div>`).join("");
 }
@@ -480,7 +513,8 @@ function renderAll(){
   updateHeader();updateStats();renderActive();renderNext();
   renderDayTabs("homeDays");renderScheduleList("homeSchedule");
   renderDayTabs("days");renderScheduleList("scheduleList");
-  document.getElementById("scheduleSubtitle").textContent=`${fullDays[selectedDay]} · ${sortedFor(selectedDay).length} ${sortedFor(selectedDay).length===1?"пара":"пар"}`;
+  const wf={all:"Усі тижні",numerator:"Чисельник",denominator:"Знаменник"};
+  document.getElementById("scheduleSubtitle").textContent=`${fullDays[selectedDay]} · ${wf[weekFilter]} · ${sortedFor(selectedDay).length} ${sortedFor(selectedDay).length===1?"пара":"пар"}`;
 }
 function showPage(page){
   document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
@@ -498,6 +532,7 @@ function openModal(id=null){
     document.getElementById("editId").value=l.id;
     document.getElementById("day").value=l.day;
     document.getElementById("type").value=l.type||"lecture";
+    document.getElementById("week").value=l.week||"both";
     document.getElementById("subject").value=l.subject;
     document.getElementById("teacher").value=l.teacher||"";
     document.getElementById("room").value=l.room||"";
@@ -506,6 +541,7 @@ function openModal(id=null){
   }else{
     document.getElementById("day").value=selectedDay;
     document.getElementById("type").value="lecture";
+    document.getElementById("week").value="both";
     document.getElementById("subject").value="";
     document.getElementById("teacher").value="";
     document.getElementById("room").value="";
@@ -530,6 +566,12 @@ document.addEventListener("click",e=>{
   if(day){
     selectedDay=Number(day.dataset.day);renderAll();return;
   }
+  const week=e.target.closest(".week-btn");
+  if(week){
+    weekFilter=week.dataset.weekFilter;
+    document.querySelectorAll(".week-btn").forEach(x=>x.classList.toggle("active",x===week));
+    renderAll();return;
+  }
   const del=e.target.closest(".delete-btn");
   if(del){
     const id=del.dataset.id, index=lessons.findIndex(l=>String(l.id)===String(id));
@@ -551,6 +593,7 @@ document.getElementById("lessonForm").addEventListener("submit",e=>{
   const data={
     day:Number(document.getElementById("day").value),
     type:document.getElementById("type").value,
+    week:document.getElementById("week").value,
     subject:document.getElementById("subject").value.trim(),
     teacher:document.getElementById("teacher").value.trim(),
     room:document.getElementById("room").value.trim(),
