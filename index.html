@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#06121b">
-<title>для моєї киці • Твій розклад</title>
+<title>Для студентів НЛТУ • Ваш розклад</title>
 <style>
 :root{
   --bg:#08090d;
@@ -245,7 +245,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">♡</div>
-      <div><div class="brand-title">для моєї киці</div><div class="brand-sub">Твій розклад</div></div>
+      <div><div class="brand-title">Для студентів НЛТУ</div><div class="brand-sub">Ваш розклад</div></div>
     </div>
     <nav class="nav">
       <button class="nav-btn active" data-page="home"><span class="nav-icon">⌂</span><span>Головна</span></button>
@@ -253,7 +253,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <button class="nav-btn" id="addFromNav"><span class="nav-icon">＋</span><span>Додати пару</span></button>
     </nav>
     <div class="sidebar-bottom">
-      <strong>🌲 для моєї киці України</strong>
+      <strong>🌲 НЛТУ </strong>
       <span>Твій особистий розклад. Дані автоматично зберігаються у браузері.</span>
     </div>
   </aside>
@@ -262,7 +262,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="topbar">
       <div class="greeting">
         <h1 id="greeting">Доброго дня!</h1>
-        <p>Нехай сьогоднішній день буде легким і красивим ♡</p>
+        <p>Продуктивного дня</p>
       </div>
       <div class="date-pill">▣ <span id="headerDate"></span></div>
     </div>
@@ -360,7 +360,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <script>
 const STORAGE_KEY = "nltu_schedule_v1";
 const daysMap = {1:"Пн",2:"Вт",3:"Ср",4:"Чт",5:"Пт",6:"Сб",0:"Нд"};
-const fullDays = {1:"Понеділок",2:"Вівторок",3:"Середа",4:"Четвер",5:"П’ятниця",6:"Субота",0:"Неділя"};
+const fullDays = {1:"Понеділок",2:"Вівторок",3:"Середа",4:"Четвер",5:"П’ятниця",6:"Субота",7:"Неділя"};
 const typeNames = {lecture:"Лекція",lab:"Лаба",practice:"Практика"};
 const typeIcons = {lecture:"◈",lab:"⌘",practice:"✦"};
 let lessons = [];
