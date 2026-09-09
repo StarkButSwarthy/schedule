@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#06121b">
+<title>НЛТУ • Розклад пар</title>
+<style>
+:root{
+  --bg:#050d14;
+  --bg2:#071722;
+  --panel:#091925;
+  --panel2:#0c1e2b;
+  --line:rgba(125,211,252,.12);
+  --line2:rgba(125,211,252,.22);
+  --text:#edf8ff;
+  --muted:#7f9caf;
+  --cyan:#27d9e8;
+  --green:#32e89a;
+  --blue:#36a8ff;
+  --purple:#a56cff;
+  --danger:#ff667d;
+  --shadow:0 20px 60px rgba(0,0,0,.35);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 75% 0%,rgba(21,107,133,.12),transparent 32%),
+    radial-gradient(circle at 10% 70%,rgba(27,157,117,.07),transparent 28%),
+    var(--bg);
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.app{min-height:100vh;display:flex}
+.sidebar{
+  width:270px;min-height:100vh;position:fixed;left:0;top:0;bottom:0;
+  padding:28px 20px;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#07131e 0%,#06111a 100%);
+  border-right:1px solid var(--line);z-index:20;
+}
+.brand{display:flex;align-items:center;gap:13px;padding:0 10px 30px}
+.logo{
+  width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+  font-weight:900;font-size:22px;color:#051117;
+  background:linear-gradient(135deg,var(--green),var(--cyan));
+  box-shadow:0 0 28px rgba(39,217,232,.22);
+}
+.brand-title{font-weight:900;font-size:22px;letter-spacing:-.02em}
+.brand-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.nav{display:grid;gap:8px}
+.nav-btn{
+  width:100%;border:1px solid transparent;background:transparent;color:#91a9ba;
+  border-radius:15px;padding:14px 15px;display:flex;align-items:center;gap:13px;
+  text-align:left;font-weight:800;transition:.18s;
+}
+.nav-btn .nav-icon{width:24px;text-align:center;font-size:20px}
+.nav-btn:hover{background:rgba(39,217,232,.06);color:#dffaff}
+.nav-btn.active{
+  background:linear-gradient(90deg,rgba(39,217,232,.12),rgba(39,217,232,.04));
+  color:var(--cyan);border-color:rgba(39,217,232,.08);
+}
+.sidebar-bottom{
+  margin-top:auto;border:1px solid var(--line);border-radius:18px;padding:17px;
+  background:rgba(8,27,40,.65);
+}
+.sidebar-bottom strong{display:block;font-size:15px}.sidebar-bottom span{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin-top:5px}
+.main{margin-left:270px;width:calc(100% - 270px);padding:34px 38px 55px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 2px 25px;border-bottom:1px solid var(--line)}
+.greeting h1{margin:0;font-size:32px;letter-spacing:-.04em}
+.greeting p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.date-pill{
+  display:flex;align-items:center;gap:9px;padding:12px 17px;border-radius:18px;
+  border:1px solid rgba(39,217,232,.2);background:rgba(39,217,232,.07);
+  color:#9deff3;font-weight:800;font-size:13px;white-space:nowrap;
+}
+.page{display:none}.page.active{display:block}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.85fr);gap:18px;margin-top:18px}
+.panel{
+  border:1px solid var(--line);background:linear-gradient(145deg,rgba(10,28,41,.94),rgba(5,17,27,.92));
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}
+.panel-head h2{margin:0;font-size:21px;letter-spacing:-.02em}
+.panel-head .sub{font-size:12px;color:var(--muted)}
+.today-panel{padding:25px}
+.active-card{
+  position:relative;overflow:hidden;padding:26px;border-radius:23px;
+  border:1px solid rgba(50,232,154,.75);
+  background:
+    radial-gradient(circle at 0 100%,rgba(50,232,154,.09),transparent 35%),
+    linear-gradient(145deg,#071c25,#07141e);
+  box-shadow:0 0 35px rgba(50,232,154,.08);
+}
+.active-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(50,232,154,.035),transparent 55%)}
+.active-top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative}
+.live{display:flex;align-items:center;gap:11px;color:var(--green);font-size:17px;font-weight:900;letter-spacing:.02em}
+.live-dot{width:17px;height:17px;border-radius:50%;background:var(--green);box-shadow:0 0 22px rgba(50,232,154,.8);animation:pulse 1.5s infinite}
+@keyframes pulse{50%{box-shadow:0 0 7px rgba(50,232,154,.45)}}
+.type-badge{
+  display:inline-flex;align-items:center;padding:8px 14px;border-radius:13px;
+  font-weight:900;font-size:13px;border:1px solid;
+}
+.type-lecture{color:#58c9ff;background:rgba(54,168,255,.11);border-color:rgba(54,168,255,.45)}
+.type-lab{color:#c58bff;background:rgba(165,108,255,.11);border-color:rgba(165,108,255,.45)}
+.type-practice{color:#42eaa0;background:rgba(50,232,154,.11);border-color:rgba(50,232,154,.45)}
+.active-card h3{position:relative;margin:28px 0 8px;font-size:31px;letter-spacing:-.035em}
+.meta{position:relative;color:#8ea8ba;font-size:16px}
+.progress-track{height:9px;border-radius:99px;background:#101f2b;border:1px solid rgba(126,174,198,.18);overflow:hidden;margin:28px 0 20px}
+.progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#31b8ff,#34e79c);box-shadow:0 0 14px rgba(50,232,154,.4);width:0%}
+.active-bottom{position:relative;display:flex;align-items:end;justify-content:space-between;gap:20px}
+.remaining-label{color:#93a9b8;font-size:15px;font-weight:700}
+.remaining{font-size:42px;line-height:1;color:var(--green);font-weight:950;letter-spacing:.02em;text-shadow:0 0 18px rgba(50,232,154,.2)}
+.next-list{padding:25px}
+.lesson-mini{
+  display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:12px;align-items:center;
+  padding:14px;border:1px solid var(--line);border-radius:17px;background:rgba(7,24,36,.6);
+  margin-top:10px;transition:.18s;
+}
+.lesson-mini:hover{border-color:var(--line2);transform:translateY(-1px)}
+.subject-icon{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+  font-size:20px;border:1px solid rgba(39,217,232,.25);background:rgba(39,217,232,.06);color:var(--cyan)
+}
+.lesson-mini strong{display:block;font-size:14px}.lesson-mini span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.mini-time{color:#9cb3c1;font-weight:900;font-size:14px}
+.week-panel{margin-top:18px;padding:25px}
+.day-tabs{display:flex;gap:7px;overflow:auto;padding-bottom:2px}
+.day{
+  border:1px solid var(--line);background:#081825;color:#7e9bac;border-radius:13px;
+  padding:10px 15px;font-weight:900;white-space:nowrap;
+}
+.day:hover{border-color:var(--line2);color:#dffaff}
+.day.active{color:#061118;background:linear-gradient(135deg,var(--green),var(--cyan));border-color:transparent;box-shadow:0 0 20px rgba(39,217,232,.14)}
+.schedule-list{display:grid;gap:11px;margin-top:16px}
+.lesson-card{
+  position:relative;display:grid;grid-template-columns:105px minmax(0,1fr) auto;gap:17px;align-items:center;
+  padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(7,22,33,.76);
+  transition:.18s;
+}
+.lesson-card:hover{border-color:var(--line2);transform:translateY(-1px)}
+.lesson-card.current{border-color:rgba(50,232,154,.65);box-shadow:0 0 25px rgba(50,232,154,.07)}
+.lesson-card.current:before{content:"";position:absolute;left:0;top:13px;bottom:13px;width:4px;border-radius:0 5px 5px 0;background:var(--green)}
+.time-big{font-size:19px;font-weight:950}.time-small{font-size:12px;color:var(--muted);margin-top:4px}
+.lesson-card h3{margin:0 0 5px;font-size:17px}.lesson-card p{margin:0;color:var(--muted);font-size:13px}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card-badge{font-size:11px;padding:5px 8px;border-radius:8px;font-weight:900}
+.card-actions{display:flex;gap:7px}
+.icon-btn{border:1px solid var(--line);background:#0a1b28;color:#9cb4c3;width:38px;height:38px;border-radius:11px}
+.icon-btn:hover{border-color:var(--line2);color:#fff;background:#102636}
+.icon-btn.delete:hover{color:#ff8b9d;border-color:rgba(255,102,125,.35);background:rgba(255,102,125,.08)}
+.countdown-inline{display:inline-flex;margin-top:9px;color:var(--green);font-weight:900;font-size:12px}
+.empty{border:1px dashed var(--line2);border-radius:20px;padding:48px 20px;text-align:center;color:var(--muted)}
+.empty-icon{font-size:38px;margin-bottom:9px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:22px 0 15px}
+.toolbar h2{margin:0;font-size:26px}.toolbar p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.btn{
+  border:0;border-radius:13px;padding:12px 16px;font-weight:900;transition:.18s;white-space:nowrap
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-accent{color:#041219;background:linear-gradient(135deg,var(--green),var(--cyan));box-shadow:0 10px 25px rgba(39,217,232,.13)}
+.btn-ghost{color:#b7cbd6;background:#0a1a26;border:1px solid var(--line)}
+.btn-danger{color:#ff91a0;background:rgba(255,102,125,.1);border:1px solid rgba(255,102,125,.2)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.stat-box{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(7,21,31,.72)}
+.stat-box strong{display:block;font-size:26px}.stat-box span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.modal-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(1,8,13,.72);backdrop-filter:blur(9px);
+  z-index:100;padding:18px;overflow:auto
+}
+.modal-backdrop.open{display:grid;place-items:center}
+.modal{
+  width:min(560px,100%);border:1px solid var(--line2);border-radius:25px;padding:25px;
+  background:linear-gradient(145deg,#0b1e2c,#07131e);box-shadow:0 30px 100px rgba(0,0,0,.55)
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h2{margin:0;font-size:22px}
+.close{border:1px solid var(--line);background:#0b1b27;color:#9eb3c0;border-radius:11px;width:38px;height:38px}
+.form{display:grid;gap:14px}.field{display:grid;gap:7px}.field label{font-size:12px;color:#a9bdc9;font-weight:900}
+.field input,.field select{
+  width:100%;border:1px solid var(--line2);border-radius:12px;padding:12px 13px;
+  color:var(--text);background:#081a27;outline:none
+}
+.field input::placeholder{color:#506b7a}
+.field input:focus,.field select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(39,217,232,.08)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:7px}
+.save-note{text-align:center;color:#5f7b8a;font-size:11px;margin-top:13px}
+.toast{
+  position:fixed;right:24px;bottom:24px;z-index:150;padding:13px 17px;border-radius:13px;
+  background:#0c2632;border:1px solid rgba(50,232,154,.35);color:#baf8df;font-weight:800;
+  box-shadow:var(--shadow);opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.mobile-top{display:none}
+@media(max-width:950px){
+  .sidebar{width:225px}.main{margin-left:225px;width:calc(100% - 225px);padding:27px 22px}
+  .dashboard-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .app{display:block}.sidebar{
+    position:sticky;top:0;bottom:auto;width:100%;min-height:0;height:auto;padding:10px 12px;
+    border-right:0;border-bottom:1px solid var(--line);background:rgba(5,14,21,.94);backdrop-filter:blur(16px)
+  }
+  .brand{padding:0;gap:9px}.logo{width:40px;height:40px;border-radius:12px;font-size:18px}
+  .brand-title{font-size:16px}.brand-sub{font-size:10px}
+  .sidebar-bottom{display:none}.nav{display:flex;margin-left:auto;gap:3px}.nav-btn{width:auto;padding:9px 10px;border-radius:11px}
+  .nav-btn span:last-child{display:none}.nav-btn .nav-icon{font-size:18px}
+  .main{margin:0;width:100%;padding:20px 13px 35px}.topbar{padding-bottom:18px}
+  .greeting h1{font-size:24px}.greeting p{font-size:12px}.date-pill{padding:9px 11px;font-size:11px}
+  .dashboard-grid{margin-top:13px;gap:13px}.today-panel,.next-list,.week-panel{padding:17px;border-radius:20px}
+  .active-card{padding:19px}.active-card h3{font-size:25px;margin-top:22px}.meta{font-size:14px}
+  .remaining{font-size:34px}.live{font-size:14px}.live-dot{width:13px;height:13px}.type-badge{padding:7px 10px;font-size:11px}
+  .lesson-card{grid-template-columns:1fr auto;gap:10px;padding:15px}.lesson-time{grid-column:1/-1}
+  .lesson-main{grid-column:1/-1}.card-actions{grid-column:2;grid-row:2}
+  .stats-row{gap:8px}.stat-box{padding:13px}.stat-box strong{font-size:21px}
+  .toolbar{align-items:flex-start}.toolbar h2{font-size:22px}.btn{padding:11px 13px}
+  .two{grid-template-columns:1fr 1fr}
+}
+@media(max-width:430px){
+  .nav-btn{padding:8px}.greeting p{display:none}.date-pill{font-size:10px}.active-bottom{align-items:center}
+  .remaining{font-size:30px}.lesson-card h3{font-size:16px}.two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Н</div>
+      <div><div class="brand-title">НЛТУ</div><div class="brand-sub">Розклад пар</div></div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-page="home"><span class="nav-icon">⌂</span><span>Головна</span></button>
+      <button class="nav-btn" data-page="schedule"><span class="nav-icon">▣</span><span>Мій розклад</span></button>
+      <button class="nav-btn" id="addFromNav"><span class="nav-icon">＋</span><span>Додати пару</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <strong>🌲 НЛТУ України</strong>
+      <span>Твій персональний розклад. Дані автоматично зберігаються у браузері.</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="greeting">
+        <h1 id="greeting">Доброго дня!</h1>
+        <p>Нехай сьогоднішній день буде продуктивним 🌿</p>
+      </div>
+      <div class="date-pill">▣ <span id="headerDate"></span></div>
+    </div>
+
+    <section id="home" class="page active">
+      <div class="dashboard-grid">
+        <div class="panel today-panel">
+          <div class="panel-head">
+            <div><h2 id="todayTitle">Сьогодні</h2><div class="sub" id="todaySubtitle"></div></div>
+          </div>
+          <div id="activeArea"></div>
+          <div class="stats-row">
+            <div class="stat-box"><strong id="totalLessons">0</strong><span>пар у розкладі</span></div>
+            <div class="stat-box"><strong id="todayLessons">0</strong><span>сьогодні</span></div>
+            <div class="stat-box"><strong>✓</strong><span>автозбереження</span></div>
+          </div>
+        </div>
+
+        <div class="panel next-list">
+          <div class="panel-head"><h2>Наступні пари</h2></div>
+          <div id="nextLessons"></div>
+        </div>
+      </div>
+
+      <div class="panel week-panel">
+        <div class="panel-head"><h2>Розклад на тиждень</h2><div class="sub">обери день</div></div>
+        <div class="day-tabs" id="homeDays"></div>
+        <div id="homeSchedule" class="schedule-list"></div>
+      </div>
+    </section>
+
+    <section id="schedule" class="page">
+      <div class="toolbar">
+        <div><h2>Мій розклад</h2><p id="scheduleSubtitle"></p></div>
+        <button class="btn btn-accent" id="addBtn">＋ Додати пару</button>
+      </div>
+      <div class="panel week-panel">
+        <div class="day-tabs" id="days"></div>
+        <div id="scheduleList" class="schedule-list"></div>
+        <div class="save-note">Розклад зберігається автоматично на цьому пристрої.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">Нова пара</h2>
+      <button class="close" id="closeModal" type="button">✕</button>
+    </div>
+    <form class="form" id="lessonForm">
+      <input type="hidden" id="editId">
+      <div class="field"><label>День</label>
+        <select id="day">
+          <option value="1">Понеділок</option><option value="2">Вівторок</option><option value="3">Середа</option>
+          <option value="4">Четвер</option><option value="5">П’ятниця</option><option value="6">Субота</option><option value="0">Неділя</option>
+        </select>
+      </div>
+      <div class="field"><label>Тип пари</label>
+        <select id="type">
+          <option value="lecture">Лекція</option>
+          <option value="lab">Лаба</option>
+          <option value="practice">Практика</option>
+        </select>
+      </div>
+      <div class="field"><label>Назва предмета</label><input id="subject" required placeholder="Наприклад: Дискретна математика"></div>
+      <div class="field"><label>Викладач</label><input id="teacher" placeholder="Наприклад: Іваненко І.І."></div>
+      <div class="field"><label>Аудиторія</label><input id="room" placeholder="Наприклад: А56"></div>
+      <div class="two">
+        <div class="field"><label>Початок</label><input id="start" type="time" required></div>
+        <div class="field"><label>Тривалість (хв)</label><input id="duration" type="number" min="1" max="600" value="90" required></div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="cancelModal">Скасувати</button>
+        <button type="submit" class="btn btn-accent">Зберегти</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = "nltu_schedule_v1";
+const daysMap = {1:"Пн",2:"Вт",3:"Ср",4:"Чт",5:"Пт",6:"Сб",0:"Нд"};
+const fullDays = {1:"Понеділок",2:"Вівторок",3:"Середа",4:"Четвер",5:"П’ятниця",6:"Субота",0:"Неділя"};
+const typeNames = {lecture:"Лекція",lab:"Лаба",practice:"Практика"};
+const typeIcons = {lecture:"◈",lab:"⌘",practice:"✦"};
+let lessons = [];
+let selectedDay = new Date().getDay();
+
+try{
+  lessons = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if(!Array.isArray(lessons)) lessons=[];
+}catch(e){lessons=[]}
+
+function normalize(){
+  lessons = lessons.map((l,i)=>({
+    id:l.id || ("lesson_"+Date.now()+"_"+i),
+    day:Number(l.day),
+    subject:String(l.subject||""),
+    teacher:String(l.teacher||""),
+    room:String(l.room||""),
+    start:l.start||"08:30",
+    duration:Number(l.duration)||90,
+    type:l.type||"lecture"
+  }));
+}
+normalize();
+
+function save(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(lessons));
+  updateStats();
+}
+function minutes(t){const [h,m]=String(t).split(":").map(Number);return h*60+m}
+function endTime(start,dur){
+  let m=(minutes(start)+Number(dur))%1440;
+  return `${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`;
+}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function isToday(day){return Number(day)===new Date().getDay()}
+function lessonStatus(l){
+  const now=new Date(), start=minutes(l.start), end=start+Number(l.duration);
+  const current=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  if(Number(l.day)!==now.getDay()) return null;
+  if(current<start || current>=end) return null;
+  const remaining=Math.max(0,Math.ceil((end-current)*60));
+  const total=Math.max(1,Number(l.duration)*60);
+  const elapsed=Math.max(0,(current-start)*60);
+  return {remaining,total,elapsed,percent:Math.min(100,Math.max(0,elapsed/total*100))};
+}
+function countdownText(sec){
+  const mm=Math.floor(sec/60), ss=sec%60;
+  return `${mm}:${String(ss).padStart(2,"0")}`;
+}
+function updateHeader(){
+  const now=new Date(), h=now.getHours();
+  document.getElementById("greeting").textContent = h<6?"Доброї ночі!":h<12?"Доброго ранку!":h<18?"Доброго дня!":"Доброго вечора!";
+  document.getElementById("headerDate").textContent =
+    `${fullDays[now.getDay()]}, ${now.toLocaleDateString("uk-UA",{day:"numeric",month:"long"})}`;
+  document.getElementById("todayTitle").textContent=`Сьогодні, ${fullDays[now.getDay()]}`;
+  document.getElementById("todaySubtitle").textContent=now.toLocaleDateString("uk-UA",{day:"numeric",month:"long",year:"numeric"});
+}
+function updateStats(){
+  document.getElementById("totalLessons").textContent=lessons.length;
+  document.getElementById("todayLessons").textContent=lessons.filter(l=>isToday(l.day)).length;
+}
+function sortedFor(day){
+  return lessons.filter(l=>Number(l.day)===Number(day)).sort((a,b)=>a.start.localeCompare(b.start));
+}
+function typeBadge(l){
+  return `<span class="type-badge type-${l.type}">${typeNames[l.type]||"Лекція"}</span>`;
+}
+function cardHTML(l){
+  const st=lessonStatus(l);
+  const meta=[l.room?`ауд. ${esc(l.room)}`:"",l.teacher?esc(l.teacher):""].filter(Boolean).join(" · ");
+  return `<article class="lesson-card ${st?'current':''}">
+    <div class="lesson-time"><div class="time-big">${esc(l.start)}</div><div class="time-small">${l.duration} хв · до ${endTime(l.start,l.duration)}</div></div>
+    <div class="lesson-main">
+      <div class="card-top"><h3>${esc(l.subject)}</h3>${typeBadge(l)}</div>
+      <p>${meta || "Деталі не вказані"}</p>
+      ${st?`<div class="countdown-inline">● Зараз триває · залишилось ${countdownText(st.remaining)}</div>`:""}
+    </div>
+    <div class="card-actions">
+      <button class="icon-btn edit-btn" type="button" data-id="${esc(l.id)}" title="Редагувати">✎</button>
+      <button class="icon-btn delete delete-btn" type="button" data-id="${esc(l.id)}" title="Видалити">⌫</button>
+    </div>
+  </article>`;
+}
+function renderDayTabs(targetId){
+  const el=document.getElementById(targetId);
+  el.innerHTML=Object.keys(daysMap).map(d=>
+    `<button class="day ${Number(d)===Number(selectedDay)?"active":""}" type="button" data-day="${d}">${daysMap[d]}</button>`
+  ).join("");
+}
+function renderActive(){
+  const area=document.getElementById("activeArea");
+  const today=sortedFor(new Date().getDay());
+  const current=today.find(l=>lessonStatus(l));
+  if(!current){
+    const upcoming=today.find(l=>minutes(l.start)>new Date().getHours()*60+new Date().getMinutes());
+    if(upcoming){
+      area.innerHTML=`<div class="active-card">
+        <div class="active-top"><div class="live" style="color:#75a1b5"><span class="live-dot" style="background:#477082;box-shadow:none"></span> НАСТУПНА ПАРА</div>${typeBadge(upcoming)}</div>
+        <h3>${esc(upcoming.subject)}</h3>
+        <div class="meta">${upcoming.room?`ауд. ${esc(upcoming.room)}`:"Аудиторія не вказана"} · ${upcoming.start} – ${endTime(upcoming.start,upcoming.duration)}</div>
+        <div class="active-bottom" style="margin-top:27px"><div class="remaining-label">Початок пари</div><div class="remaining">${esc(upcoming.start)}</div></div>
+      </div>`;
+    }else{
+      area.innerHTML=`<div class="empty"><div class="empty-icon">🌙</div><strong>Зараз пар немає</strong><div style="margin-top:5px">Можеш відпочити або додати нову пару.</div></div>`;
+    }
+    return;
+  }
+  const st=lessonStatus(current);
+  area.innerHTML=`<div class="active-card">
+    <div class="active-top"><div class="live"><span class="live-dot"></span> ЗАРАЗ ТРИВАЄ</div>${typeBadge(current)}</div>
+    <h3>${esc(current.subject)}</h3>
+    <div class="meta">${current.room?`ауд. ${esc(current.room)}`:"Аудиторія не вказана"} · ${current.start} – ${endTime(current.start,current.duration)}</div>
+    <div class="progress-track"><div class="progress-fill" style="width:${st.percent}%"></div></div>
+    <div class="active-bottom"><div class="remaining-label">До кінця пари</div><div class="remaining">${countdownText(st.remaining)}</div></div>
+  </div>`;
+}
+function renderNext(){
+  const el=document.getElementById("nextLessons"), now=new Date();
+  const currentMinutes=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  let list=sortedFor(now.getDay()).filter(l=>minutes(l.start)>currentMinutes).slice(0,4);
+  if(!list.length) list=sortedFor(now.getDay()).slice(0,4);
+  if(!list.length){
+    el.innerHTML=`<div class="empty" style="padding:35px 15px"><div class="empty-icon">📚</div><strong>На сьогодні пар немає</strong></div>`;
+    return;
+  }
+  el.innerHTML=list.map(l=>`<div class="lesson-mini">
+    <div class="subject-icon">${typeIcons[l.type]||"◈"}</div>
+    <div><strong>${esc(l.subject)}</strong><span>${l.room?`ауд. ${esc(l.room)} · `:""}${typeNames[l.type]||"Лекція"}</span></div>
+    <div class="mini-time">${esc(l.start)}</div>
+  </div>`).join("");
+}
+function renderScheduleList(targetId){
+  const el=document.getElementById(targetId), list=sortedFor(selectedDay);
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📚</div><strong>На цей день пар немає</strong><div style="margin-top:5px">Додай першу пару кнопкою вище.</div></div>`;
+    return;
+  }
+  el.innerHTML=list.map(cardHTML).join("");
+}
+function renderAll(){
+  updateHeader();updateStats();renderActive();renderNext();
+  renderDayTabs("homeDays");renderScheduleList("homeSchedule");
+  renderDayTabs("days");renderScheduleList("scheduleList");
+  document.getElementById("scheduleSubtitle").textContent=`${fullDays[selectedDay]} · ${sortedFor(selectedDay).length} ${sortedFor(selectedDay).length===1?"пара":"пар"}`;
+}
+function showPage(page){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+  window.scrollTo({top:0,behavior:"smooth"});
+  renderAll();
+}
+function openModal(id=null){
+  document.getElementById("modal").classList.add("open");
+  document.getElementById("editId").value="";
+  document.getElementById("modalTitle").textContent=id?"Редагувати пару":"Нова пара";
+  if(id){
+    const l=lessons.find(x=>String(x.id)===String(id)); if(!l)return;
+    document.getElementById("editId").value=l.id;
+    document.getElementById("day").value=l.day;
+    document.getElementById("type").value=l.type||"lecture";
+    document.getElementById("subject").value=l.subject;
+    document.getElementById("teacher").value=l.teacher||"";
+    document.getElementById("room").value=l.room||"";
+    document.getElementById("start").value=l.start;
+    document.getElementById("duration").value=l.duration;
+  }else{
+    document.getElementById("day").value=selectedDay;
+    document.getElementById("type").value="lecture";
+    document.getElementById("subject").value="";
+    document.getElementById("teacher").value="";
+    document.getElementById("room").value="";
+    document.getElementById("start").value="08:30";
+    document.getElementById("duration").value=90;
+  }
+  setTimeout(()=>document.getElementById("subject").focus(),50);
+}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function toast(msg){
+  const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");
+  clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove("show"),1700);
+}
+
+document.addEventListener("click",e=>{
+  const nav=e.target.closest(".nav-btn");
+  if(nav){
+    if(nav.id==="addFromNav"){openModal();return}
+    showPage(nav.dataset.page);return;
+  }
+  const day=e.target.closest(".day");
+  if(day){
+    selectedDay=Number(day.dataset.day);renderAll();return;
+  }
+  const del=e.target.closest(".delete-btn");
+  if(del){
+    const id=del.dataset.id, index=lessons.findIndex(l=>String(l.id)===String(id));
+    if(index>=0){lessons.splice(index,1);save();renderAll();toast("Пару видалено");}
+    return;
+  }
+  const edit=e.target.closest(".edit-btn");
+  if(edit){openModal(edit.dataset.id);return}
+});
+
+document.getElementById("addBtn").addEventListener("click",()=>openModal());
+document.getElementById("closeModal").addEventListener("click",closeModal);
+document.getElementById("cancelModal").addEventListener("click",closeModal);
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+document.getElementById("lessonForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const data={
+    day:Number(document.getElementById("day").value),
+    type:document.getElementById("type").value,
+    subject:document.getElementById("subject").value.trim(),
+    teacher:document.getElementById("teacher").value.trim(),
+    room:document.getElementById("room").value.trim(),
+    start:document.getElementById("start").value,
+    duration:Number(document.getElementById("duration").value)
+  };
+  if(!data.subject || !data.start || !data.duration)return;
+  const id=document.getElementById("editId").value;
+  if(id){
+    const i=lessons.findIndex(l=>String(l.id)===String(id));
+    if(i>=0)lessons[i]={...lessons[i],...data};
+    toast("Пару оновлено");
+  }else{
+    lessons.push({...data,id:(crypto.randomUUID?crypto.randomUUID():"id_"+Date.now()+"_"+Math.random())});
+    toast("Пару додано");
+  }
+  selectedDay=data.day;save();closeModal();showPage("schedule");
+});
+
+function tick(){
+  updateHeader();updateStats();renderActive();renderNext();
+  const activePage=document.querySelector(".page.active")?.id;
+  if(activePage==="schedule")renderScheduleList("scheduleList");
+}
+setInterval(tick,1000);
+renderAll();
+</script>
+</body>
+</html>
